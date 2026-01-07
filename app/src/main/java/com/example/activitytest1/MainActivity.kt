@@ -6,9 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 class MainActivity : AppCompatActivity() {
 
+    // 1. 定义一个水果列表，用来装我们要显示的“货物”
+    private val fruitList = ArrayList<Fruit>()
     companion object {
         private const val TAG = "MainActivity"
     }
@@ -43,7 +47,36 @@ class MainActivity : AppCompatActivity() {
             Log.d(TAG, "跳转到百度浏览器")
         }
 
+        // 2. 初始化水果数据（把货备好）
+        initFruits()
+
+        // 3. 找到 RecyclerView 实例（大桌子）
+        val recyclerView: RecyclerView = findViewById(R.id.recyclerView)
+
+        // 4. 设置布局管理器（告诉桌子怎么摆放：这里是线性垂直摆放）
+        val layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = layoutManager
+
+        // 5. 创建适配器实例并传入数据（叫个服务员，把货给他）
+        val adapter = FruitAdapter(fruitList)
+
+        // 6. 将适配器设置进 RecyclerView（服务员开始在大桌子上摆盘）
+        recyclerView.adapter = adapter
+
     }
+
+    private fun initFruits() {
+        // 重复 50 次，这样列表长一点，方便你测试“滑动复用”的效果
+        repeat(50) {
+            fruitList.add(Fruit("Apple", R.drawable.apple_pic))
+            fruitList.add(Fruit("Banana", R.drawable.banana_pic))
+            fruitList.add(Fruit("Orange", R.drawable.orange_pic))
+            fruitList.add(Fruit("Watermelon", R.drawable.watermelon_pic))
+            fruitList.add(Fruit("Pear", R.drawable.pear_pic))
+            fruitList.add(Fruit("Grape", R.drawable.grape_pic))
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
